@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<head>
+  <title>Juego del laberinto</title>
+  <style>
+    .div-casillas {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid black;
+    }
+    .I { background-color: #FFFF00; } 
+    .F { background-color: #008000; }    
+    .S { background-image: url('https://drive.google.com/file/d/1xS5TRxzPb-eCNergvmO9H2A3J5yZe7C6/view?usp=sharing'); }
+    .C { background-image: url('https://drive.google.com/file/d/1xS5TRxzPb-eCNergvmO9H2A3J5yZe7C6/view?usp=drive_link'); }
+    .P { background-image: url('https://drive.google.com/file/d/1by_0gq0vHCzTRLxEtPNHC49JYSSu2x5B/view?usp=sharing'); }
+    .A { background-color: #000000; }
+    .O { background-color: #add8e6; } 
+
+
+   
+</style>
+  </style>
+  <script>
+
+    function escapeHTML(html) {
+      var fn = function(tag) {
+        var charsToReplace = {
+          '&' : '&amp;',
+          '<' : '&lt;',
+          '>' : '&gt;',
+          '"' : '&#34;'
+        };
+        return charsToReplace[tag] || tag;
+      }
+      return html.replace(/[&<>"]/g, fn);
+    }
+
+    
+    function leerArchivos() {   
+    
+      var files = document.getElementById("myFiles").files;
+      var filesLoaded = 0;
+      var readers = []
+      for(var i=0; i<files.length; i++) {     
+        var reader = new FileReader();
+        reader.fileName = files[i].name;
+        readers.push(reader);
+        reader.onload = function(e) {
+        
+          var p = document.createElement("p");
+          document.body.appendChild(p);
+          p.innerHTML = "Mapita cargado: " + e.target.fileName + "<br>" + escapeHTML(e.target.result).replaceAll("\n", "<br>");
+          filesLoaded++;
+          if (readers.every(r => r.result)) {
+            mostrarIniciarJuego(readers.map(r => r.result));
+          }
+        };
+
+        reader.readAsText(files[i]);
+      }
+    }
+
+ 
+    function mostrarIniciarJuego(fileContents) {
+      var iniboton = document.createElement("button");
+      iniboton.style="background-color: green; color: white; padding: 10px; border-radius: 5px; cursor: pointer;"
+      iniboton.innerHTML = "Iniciar el Juego";
+      iniboton.onclick = function() {
+        crearMapita(fileContents[0]);
+        
+      };
+      document.body.appendChild(iniboton);
+    }
+    function crearMapita(mapData) {
+      var lines = mapData.split('\n');
+      var gameBoard = document.createElement("div");
+      lines.forEach(line => {
+        var row = document.createElement("div");
+        for (var char of line.trim()) {
+          var cell = document.createElement("div");
+          cell.className = "div-casillas " + char;
+          row.appendChild(cell);
+        }
+        gameBoard.appendChild(row);
+      });
+      document.body.appendChild(gameBoard);
+    }
+  </script>
+
+  
+</head>
+
+<body>
+
+    <h1>Juego del laberinto</h1>
+    <label style="background-color: green; color: white; padding: 10px; border-radius: 5px; cursor: pointer;">
+        Subir Laberinto
+        <input id="myFiles" type="file" onchange="leerArchivos()" multiple style="display: none;"/>
+    </label>
+</body>
+</html>
