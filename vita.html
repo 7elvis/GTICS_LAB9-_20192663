@@ -12,9 +12,9 @@
     }
     .I { background-color: #FFFF00; } 
     .F { background-color: #008000; }    
-    .S { background-image: url('https://drive.google.com/file/d/1xS5TRxzPb-eCNergvmO9H2A3J5yZe7C6/view?usp=sharing'); }
-    .C { background-image: url('https://drive.google.com/file/d/1xS5TRxzPb-eCNergvmO9H2A3J5yZe7C6/view?usp=drive_link'); }
-    .P { background-image: url('https://drive.google.com/file/d/1by_0gq0vHCzTRLxEtPNHC49JYSSu2x5B/view?usp=sharing'); }
+    .S { background-image: url('suplantacion.png'); }
+    .C { background-image: url('copia.png'); }
+    .P { background-image: url('plagio.png'); }
     .A { background-color: #000000; }
     .O { background-color: #add8e6; } 
 
@@ -74,18 +74,19 @@
       document.body.appendChild(iniboton);
     }
     function crearMapita(mapData) {
-      var lines = mapData.split('\n');
-      var gameBoard = document.createElement("div");
-      lines.forEach(line => {
-        var row = document.createElement("div");
-        for (var char of line.trim()) {
-          var cell = document.createElement("div");
-          cell.className = "div-casillas " + char;
-          row.appendChild(cell);
+        var lines = mapData.split('\n');
+        var gameBoard = document.createElement("div");
+        for (var line of lines) {
+            if (line.trim() === "--------------") break;
+            var row = document.createElement("div");
+            for (var char of line.trim()) {
+                var cell = document.createElement("div");
+                cell.className = "div-casillas " + char;
+                row.appendChild(cell);
+            }
+            gameBoard.appendChild(row);
         }
-        gameBoard.appendChild(row);
-      });
-      document.body.appendChild(gameBoard);
+        document.body.appendChild(gameBoard);
     }
   </script>
 
